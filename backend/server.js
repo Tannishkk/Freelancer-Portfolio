@@ -8,14 +8,14 @@ const Message = require("./models/Message");
 
 const app = express();
 
-// 🔥 MIDDLEWARE
+//  MIDDLEWARE
 app.use(express.json());
 app.use(cors());
 
-// 🔥 CONNECT DB
+//  CONNECT DB
 connectDB();
 
-// 🔥 ROUTES
+//  ROUTES
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/portfolios", require("./routes/portfolioRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes")); // ✅ for chat history
@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
   res.send("API running...");
 });
 
-// 🔥 SOCKET SETUP
+//  SOCKET SETUP
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -35,31 +35,31 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("🟢 User connected:", socket.id);
+  console.log(" User connected:", socket.id);
 
-  // ✅ JOIN ROOM (Chat Window)
+  //  JOIN ROOM (Chat Window)
   socket.on("joinRoom", (roomId) => {
     socket.join(roomId);
-    console.log("📥 Joined room:", roomId);
+    console.log(" Joined room:", roomId);
   });
 
-  // ✅ JOIN PERSONAL ROOM (For global unread notifications)
+  // JOIN PERSONAL ROOM (For global unread notifications)
   socket.on("joinPersonalRoom", (userId) => {
     socket.join(userId.toString());
-    console.log("📥 Joined personal room:", userId);
+    console.log(" Joined personal room:", userId);
   });
 
-  // ✅ SEND MESSAGE
+  //  SEND MESSAGE
   socket.on("sendMessage", async ({ conversationId, roomId, message, sender, receiver }) => {
     try {
       console.log("📤 sendMessage triggered");
 
       if (!receiver) {
-        console.log("❌ Receiver missing");
+        console.log(" Receiver missing");
         return;
       }
 
-      // ✅ SAVE MESSAGE IN DB
+      //  SAVE MESSAGE IN DB
       const savedMessage = await Message.create({
         sender,
         receiver,
@@ -67,9 +67,9 @@ io.on("connection", (socket) => {
         conversationId,
       });
 
-      console.log("💾 Message saved");
+      console.log("Message saved");
 
-      // ✅ UPDATE CONVERSATION
+      //  UPDATE CONVERSATION
       if (conversationId) {
         const Conversation = require("./models/Conversation");
         let conv = await Conversation.findById(conversationId);
@@ -81,7 +81,7 @@ io.on("connection", (socket) => {
           conv.unreadCounts.set(receiver.toString(), count + 1);
           await conv.save();
 
-          // ✅ EMIT TO RECEIVER'S PERSONAL ROOM (update their unread counts globally)
+          // EMIT TO RECEIVER'S PERSONAL ROOM (update their unread counts globally)
           io.to(receiver.toString()).emit("conversationUpdated", {
             conversationId,
             message: savedMessage,
@@ -97,23 +97,23 @@ io.on("connection", (socket) => {
         }
       }
 
-      // ✅ SEND TO ROOM (Active Chat window)
+      //  SEND TO ROOM (Active Chat window)
       io.to(roomId).emit("receiveMessage", {
         ...savedMessage._doc,
       });
 
     } catch (err) {
-      console.log("❌ Error:", err.message);
+      console.log(" Error:", err.message);
     }
   });
 
-  // ✅ DISCONNECT
+  // DISCONNECT
   socket.on("disconnect", () => {
-    console.log("🔴 User disconnected:", socket.id);
+    console.log(" User disconnected:", socket.id);
   });
 });
 
-// 🔥 START SERVER
+// START SERVER
 server.listen(5000, () => {
-  console.log("🚀 Server running on port 5000");
+  console.log("Server running on port 5000");
 });
