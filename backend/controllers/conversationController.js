@@ -1,6 +1,6 @@
 const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
-const User = require("../models/User");
+const User = require("../models/user");
 
 // CREATE OR GET CONVERSATION
 const createOrGetConversation = async (req, res) => {
