@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import API from "../services/api";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://freelancer-portfolio-9i0k.onrender.com");
 
 const Chat = () => {
   const { id } = useParams(); // receiverId

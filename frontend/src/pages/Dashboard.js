@@ -3,7 +3,7 @@ import { useNavigate, Outlet } from "react-router-dom";
 import { io } from "socket.io-client";
 import API from "../services/api";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://freelancer-portfolio-9i0k.onrender.com");
 
 const Dashboard = () => {
   const navigate = useNavigate();

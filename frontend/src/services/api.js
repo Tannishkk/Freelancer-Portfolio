@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://freelancer-portfolio-9i0k.onrender.com/api",
 });
 
 // 🔥 ADD TOKEN IN EVERY REQUEST
