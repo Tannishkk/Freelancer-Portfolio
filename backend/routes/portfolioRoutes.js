@@ -19,7 +19,7 @@ router.put("/", protect, updatePortfolio);
 // Delete
 router.delete("/", protect, deletePortfolio);
 // Get by ID (NEW)
-router.get("/:id", getPortfolioById); // 🔥 ADD THIS
+router.get("/:id", getPortfolioById); //  ADD THIS
 // Update by ID (NEW)
 router.put("/:id", protect, updatePortfolio);
 module.exports = router;
