@@ -41,7 +41,7 @@ const loginUser = async (req, res) => {
 
         const token = jwt.sign(
             { id: user._id },
-            "secret", // ⚠️ must match authMiddleware
+            "secret", //  must match authMiddleware
             { expiresIn: "1d" }
         );
 
