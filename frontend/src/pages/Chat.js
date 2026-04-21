@@ -70,8 +70,8 @@ const Chat = () => {
   if (!message.trim()) return;
 
   socket.emit("sendMessage", {
-    roomId: room,      // ✅ match backend
-    message: message,  // ✅ match backend
+    roomId: room,      //  match backend
+    message: message,  // match backend
     sender: senderId,
     receiver: id,
   });
