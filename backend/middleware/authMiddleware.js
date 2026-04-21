@@ -10,9 +10,9 @@ module.exports = (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    const decoded = jwt.verify(token, "secret"); // ⚠️ must match login
+    const decoded = jwt.verify(token, "secret"); //  must match login
 
-    req.user = { id: decoded.id }; // ✅ VERY IMPORTANT
+    req.user = { id: decoded.id }; //  VERY IMPORTANT
 
     next();
   } catch (err) {
